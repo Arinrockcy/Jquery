@@ -1,4 +1,4 @@
-// JavaScript Document
+
 
 (function($) {  
 
@@ -52,7 +52,7 @@ options = $.extend(defaults, options);
 		
 		switch($(this).attr('for'))
 		{
-			case 'brand':
+			case 'breed':
 			brand=$(this).val();
 			fpc(brand,null);
 			break;
@@ -63,7 +63,7 @@ $('body').on('click','.fliter-paging-ckeck',function(){
 		{
 		switch($(this).attr('for'))
 		{
-			case 'brand':
+			case 'breed':
 			brand=$(this).val();
 			fpc(null,style);
 			break;
@@ -74,23 +74,21 @@ $('body').on('click','.fliter-paging-ckeck',function(){
 		{
 			ap(options.defaultfunction,options.value,0,sorting,br,sty,stprice,enprice);
 			}	
-$('body').on('change','.selectpicker',function(){
-	
-	switch($(this).attr('for'))
-		{
-			case 'loadMprice':
-			stprice=$(this).val();
-			enprice=$(".selectpicker:eq(1) option:selected").val();
+$( "#slider-range" ).slider({
+      range: true,
+      min: 200,
+      max: 20000,
+      values: [ 1948 , 5247 ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "₹" + ui.values[ 0 ] + " - ₹" + ui.values[ 1 ] );
+		stprice=ui.values[ 0 ];
+			enprice=ui.values[ 1 ];
 			csp(stprice,enprice);
-			break;
-			case 'loadmaxprice':
-			enprice=$(this).val();
-			stprice=$(".selectpicker:eq(0) option:selected").val();
-			csp(stprice,enprice);
-			break;
-			}
-	});	
-	function csp(minp,maxp)
+      }
+    });
+    $( "#amount" ).val( "₹" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - ₹" + $( "#slider-range" ).slider( "values", 1 ) );
+	  	function csp(minp,maxp)
 	{
 		ap(options.defaultfunction,options.value,0,sorting,brand,style,minp,maxp);
 		}			
@@ -102,7 +100,7 @@ $('body').on('change','.selectpicker',function(){
 	function ap(to,data,st,sor,brd,stle,minp,maxp)
 	{
 			$.ajax({
-								url:encodeURI('classes/dy_service.php'),
+								url:encodeURI('Classes/crazybean.php'),
 								dataType: 'json',  // what to expect back from the PHP script, if anything
          		       			cache: false,
                 				type:'post',
@@ -123,6 +121,7 @@ $('body').on('change','.selectpicker',function(){
 									}
 									if(pf!=1)
 									{
+										plugin.html(msg.result);
 										$('#show_total').html(msg.total);
 										$('.pagination').html(msg.row);
 										pf=1;
